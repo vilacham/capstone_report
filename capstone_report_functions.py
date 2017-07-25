@@ -35,3 +35,21 @@ def preprocess(data):
 	data.drop(columns_to_drop, axis=1, inplace=True)
 	
 	return data
+
+
+def get_n_principal_components(data):
+    print(data)
+    from sklearn.decomposition import PCA
+    import numpy as np
+    pca = PCA(n_components=None)
+    data_pca = pca.fit_transform(data)
+    explained_variance_ratio = pca.explained_variance_ratio_
+    cumulative_exp = np.cumsum(explained_variance_ratio)
+    auxiliar = 0
+    n_comp = 0
+    for i in range(len(cumulative_exp)):
+        auxiliar = cumulative_exp[i]
+        if auxiliar = 0.7:
+            n_comp = i + 1
+            break
+    return n_comp
