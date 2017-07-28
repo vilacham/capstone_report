@@ -1,6 +1,7 @@
 def preprocess(data):
     # Imports
     import numpy as np
+    import pandas as pd
 
     # Rename columns
     data.columns = ['DATE', 'A TEAM', 'H TEAM', 'osite', 'A PTS', 'H PTS', 'A STK', 'H STK', 'A PTS LG', 'A FGM LG',
@@ -24,6 +25,9 @@ def preprocess(data):
     data.reset_index(inplace=True)
 
     # Deal with 'DAY' and 'MTH' features (both are categorical)
+    data = pd.get_dummies(data, columns=['DAY', 'MTH'])
+
+    # Create label column (1 for home team; 0 for visitor team)
     data['WINNER'] = (data['H PTS'] > data['A PTS']).astype(int)
 
     # Drop unnecessary columns
@@ -64,7 +68,7 @@ def plot_pca_graph(n_features, evr, c_evr):
     plt.step(range(n_features), c_evr, where='mid', label='Cumulative explained variance')
 
     # Plot guide line
-    plt.plot([i for i in range(n_features)], [0.7] * range(n_features), '--', color='g')
+    plt.plot([i for i in range(n_features)], [0.7] * n_features, '--', color='g')
 
     # Plot legend
     plt.legend(loc='best')
