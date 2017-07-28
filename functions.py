@@ -37,6 +37,22 @@ def preprocess(data):
     return data
 
 
+def get_frequent_outliers(data):
+    # Imports
+    import numpy as np
+    from collections import Counter
+
+    counter = Counter()
+    for feature in data.iloc[:, 2:87].columns:
+        quartile_1 = np.percentile(data[feature], 25)
+        quartile_3 = np.percentile(data[feature], 75)
+        step = (quartile_3 - quartile_1) * 1.5
+        outliers = data[~((data[feature] >= quartile_1 - step) & (data[feature] <= quartile_3 + step))]
+        counter.update(outliers.index.values)
+    frequent_outliers = [outlier[0] for outlier in counter.items() if outlier[1] > 1]
+    return frequent_outliers
+
+
 def get_n_principal_components(data):
     # Imports
     from sklearn.decomposition import PCA
