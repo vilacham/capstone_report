@@ -69,6 +69,8 @@ def get_n_principal_components(data):
         if aux >= 0.7:
             n_comp = i + 1
             break
+    n_features = data.shape[1]
+    plot_pca_graph(n_features, evr, c_evr)
     return n_comp
 
 
