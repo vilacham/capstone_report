@@ -49,7 +49,7 @@ def get_n_principal_components(data):
     n_comp = 0
     for i in range(len(cumulative_exp)):
         auxiliar = cumulative_exp[i]
-        if auxiliar = 0.7:
+        if auxiliar == 0.7:
             n_comp = i + 1
             break
     return n_comp

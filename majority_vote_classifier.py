@@ -3,7 +3,7 @@ from sklearn.metrics import accuracy_score
 
 import numpy as np
 
-class Majority_Vote_Classifier(BaseEstimator, ClassifierMixin):
+class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
 	""" A majority vote ensemble classifier
 
 	Parameters
