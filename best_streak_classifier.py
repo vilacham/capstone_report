@@ -7,6 +7,7 @@ class BestStreakClassifier:
     Number of streak wins for the home team
     
     away_streak: {array-like}, shape = [n_samples]
+    Number of streak wins for the visitor team
     """
     def __init__(self, home_streak, away_streak):
         self.home_streak = home_streak

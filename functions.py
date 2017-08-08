@@ -113,7 +113,7 @@ def get_n_principal_components(data):
             n_comp = i + 1
             break
     n_features = data.shape[1]
-    plot_pca_graph(n_features, evr, c_evr)
+    # plot_pca_graph(n_features, evr, c_evr)
     return n_comp
 
 
@@ -136,3 +136,57 @@ def plot_pca_graph(n_features, evr, c_evr):
 
     # Display
     plt.show()
+
+
+def reduce(train, test, n_comp):
+    from sklearn.decomposition import PCA
+    pca = PCA(n_components=n_comp)
+    train_reduced = pca.fit_transform(train)
+    test_reduced = pca.transform(test)
+    return train_reduced, test_reduced
+
+
+def create_classifiers():
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.tree import DecisionTreeClassifier
+    from sklearn.neighbors import KNeighborsClassifier
+    from sklearn.neural_network import MLPClassifier
+    from sklearn.svm import SVC
+    from sklearn.naive_bayes import GaussianNB
+    from sklearn.ensemble import RandomForestClassifier
+    classifiers = list()
+    classifiers.append((LogisticRegression(), {'C': [.001, .01, .1, 1, 10, 100, 1000],
+                                               'solver': ('liblinear', 'sag', 'newton-cg', 'lbfgs'),
+                                               'class_weight': (None, 'balanced')}))
+    classifiers.append((DecisionTreeClassifier(), {'criterion': ('gini', 'entropy'),
+                                                  'min_samples_split': [.1, .05, .025, .01, 2],
+                                                  'min_samples_leaf': [.05, .025, .0125, .005, 1]}))
+    classifiers.append((KNeighborsClassifier(), {'n_neighbors': [1, 3, 5, 7, 9],
+                                                 'weights': ('uniform', 'distance'),
+                                                 'metric': ('euclidean', 'manhattan', 'chebyshev', 'minkowski')}))
+    #classifiers.append((MLPClassifier(), {'activation' : ('identity', 'logistic', 'tanh', 'relu'),
+    #                                      'solver': ('lbfgs', 'sgd', 'adam'),
+    #                                      'learning_rate': ('constant', 'invscaling', 'adaptive')}))
+    #classifiers.append((SVC(), {'C': [.001, .01, .1, 1, 10, 100, 1000],
+    #                            'kernel': ('poly', 'rbf', 'sigmoid')}))
+    classifiers.append((GaussianNB(), {}))
+    #classifiers.append((RandomForestClassifier(), {'n_estimators': [10, 20, 25, 50, 100],
+    #                                               'criterion': ('giny', 'entropy'),
+    #                                               'max_features': ('sqrt', 'log2'),
+    #                                               'min_samples_split': [.1, .05, .025, .01, 2],
+    #                                               'min_samples_leaf': [.05, .025, .0125, .005, 1]}))
+    return classifiers
+
+
+def optimize_classifiers(classifiers, features, labels):
+    from sklearn.model_selection import StratifiedKFold, GridSearchCV
+    skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    optimized_classifiers = list()
+    for clf, param in classifiers:
+        gs = GridSearchCV(estimator=clf, param_grid=param, scoring='accuracy', cv=skf, n_jobs=1)
+        gs = gs.fit(features, labels)
+        print('-' * 50)
+        print('Best parameters: {}'.format(gs.best_params_))
+        print('Best score: {:.3f}'.format(gs.best_score_))
+        optimized_classifiers.append(gs.best_estimator_)
+    return optimized_classifiers

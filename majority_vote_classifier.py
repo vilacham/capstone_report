@@ -3,6 +3,7 @@ from sklearn.metrics import accuracy_score
 
 import numpy as np
 
+
 class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
 	""" A majority vote ensemble classifier
 
@@ -15,7 +16,6 @@ class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
 	Default: 'classlabel'
 	If 'classlabel' the prediction is based on the argmax of class label, else if 'probability' the argmax of the sum of
 	probabilities is used to predict the class label (recommended for calibrated classifiers)
-
 	"""
 	def __init__(self, classifiers, vote='classlabel'):
 		self.classifiers = classifiers
@@ -59,7 +59,7 @@ class MajorityVoteClassifier(BaseEstimator, ClassifierMixin):
 			# Collect results from clf.predict calls
 			predictions = np.asarray([classifier.predict(X) for classifier in self.classifiers_]).T
 			majority_vote = np.apply_along_axis(lambda x: np.argmax(np.bincount(x)), axis=1, arr=predictions)
-		else: #if self.vote == 'probability'
+		else:  # if self.vote == 'probability'
 			majority_vote = np.argmax(self.predict_proba(X), axis=1)
 		return majority_vote
 
