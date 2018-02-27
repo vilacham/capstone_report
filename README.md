@@ -5,3 +5,5 @@ This is my final project of the Udacity Machine Learning Engineer Nanodegree. My
 I wrote the codes in Python. Instructions to download and install Python can be found in https://www.python.org/downloads/.
 
 I also used Jupyter Notebook to help me throughout the project. Instructions to download and install Jupyter Notebook can be found in http://jupyter.org/install.
+
+The proposal for this capstone project can be found in https://github.com/vilacham/mlnd_capstone_proposal/blob/master/proposal.pdf.
