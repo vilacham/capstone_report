@@ -183,7 +183,7 @@ def create_classifiers():
     from sklearn.naive_bayes import GaussianNB
     classifiers = list()
     classifiers.append(('lr', LogisticRegression(random_state=42), {
-        'C': [.001, .01, .1, 1, 10, 100, 1000],
+        'C': [.0001, .001, .01, .1, 1, 10, 100, 1000],
         'solver': ('saga', 'sag', 'newton-cg', 'lbfgs'),
         'class_weight': (None, 'balanced')}))
     classifiers.append(('dt', DecisionTreeClassifier(random_state=42), {
@@ -193,7 +193,7 @@ def create_classifiers():
         'min_weight_fraction_leaf': [0., .125, .25, .5],
         'class_weight': ('balanced', None)}))
     classifiers.append(('knn', KNeighborsClassifier(), {
-        'n_neighbors': [1, 3, 5, 7, 9],
+        'n_neighbors': [1, 3, 5, 7, 9, 11, 13],
         'weights': ('uniform', 'distance'),
         'metric': ('euclidean', 'manhattan', 'chebyshev')}))
     # classifiers.append(('rnn', RadiusNeighborsClassifier(), {
